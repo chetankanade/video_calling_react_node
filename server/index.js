@@ -22,7 +22,11 @@ io.on("connection", (socket) => {
     //setting socket id with email (key:value)
     socketIdToemailMap.set(socket.id, email);
 
-    //(1)sending data back to user(like we use this data(to keep track))
+    //(2)if any one already present in a room, then it will notify them, that a new user joined
+    io.to(room).emit("user:joined", { email, id: socket.id });
+    socket.join(room);
+
+    //(1)sending data back to user(we use this data(to keep track))
     io.to(socket.id).emit("room:join", data);
   });
 });
