@@ -1,11 +1,15 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useSocket } from "../context/SocketProvider";
+import { useNavigate } from "react-router-dom";
 const LobbyScreen = () => {
   const [email, setEmail] = useState("");
   const [room, setRoom] = useState("");
 
   //using our socket
   const socket = useSocket();
+
+  //use navigate to push user to any route
+  const navigate = useNavigate();
 
   const handleSumbitForm = useCallback(
     (e) => {
@@ -19,7 +23,9 @@ const LobbyScreen = () => {
   //handling room join
   const handleJoinRoom = useCallback((data) => {
     const { email, room } = data;
-    
+
+    //sending user to particular room
+    navigate(`/room/${room}`);
   });
 
   useEffect(() => {
