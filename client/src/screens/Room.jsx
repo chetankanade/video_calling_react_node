@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useSocket } from "../context/SocketProvider";
 import ReactPlayer from "react-player";
+import peer from "../services/peer";
 
 const RoomPage = () => {
   const socket = useSocket();
@@ -13,27 +14,35 @@ const RoomPage = () => {
     setRemoteSocketId(id);
   }, []);
 
-  // when user call/connect we will unable audio video
+  // when user call/connect we will on our stream
   const handleCallUser = useCallback(async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: true,
       video: true,
     });
 
+    //creating offer to send other user
+    const offer = await peer.getOffer();
+    //(3)now we will send this offer to new user using socket
+    socket.emit("user:call", { to: remoteSocketId, offer });
+
     setMyStream(stream);
-  }, []);
+  }, [remoteSocketId, socket]);
+
+  const handleIncomingCall = useCallback(() => {}, []);
 
   // Now need to render stream to our local machine using reactPlayer packg
-
   useEffect(() => {
     //(2)listening the user:joined event
     socket.on("user:joined", handleUserJoined);
+    socket.on("incoming:call", handleIncomingCall);
 
     //Deregistering socket to prevent re-rendering
     return () => {
       socket.off("user:joined", handleUserJoined);
+      socket.off("incoming:call", handleIncomingCall);
     };
-  }, [socket, handleUserJoined]);
+  }, [socket, handleUserJoined, handleIncomingCall]);
   return (
     <div>
       <h1>Room page</h1>

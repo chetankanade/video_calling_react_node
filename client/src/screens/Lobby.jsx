@@ -21,12 +21,15 @@ const LobbyScreen = () => {
   );
 
   //handling room join
-  const handleJoinRoom = useCallback((data) => {
-    const { email, room } = data;
+  const handleJoinRoom = useCallback(
+    (data) => {
+      const { room } = data;
 
-    //sending user to particular room
-    navigate(`/room/${room}`);
-  });
+      //sending user to particular room
+      navigate(`/room/${room}`);
+    },
+    [navigate]
+  );
 
   useEffect(() => {
     //(1) using data which came back from B_End
