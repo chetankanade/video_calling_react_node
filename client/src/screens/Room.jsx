@@ -29,7 +29,10 @@ const RoomPage = () => {
     setMyStream(stream);
   }, [remoteSocketId, socket]);
 
-  const handleIncomingCall = useCallback(() => {}, []);
+  const handleIncomingCall = useCallback((from,offer) => {
+    console.log("----",from,offer);
+    
+  }, []);
 
   // Now need to render stream to our local machine using reactPlayer packg
   useEffect(() => {

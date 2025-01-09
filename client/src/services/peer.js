@@ -21,6 +21,7 @@ class PeerService {
       return offer;
     }
   }
+  
 }
 //returning peerservice object
 const peer = new PeerService();

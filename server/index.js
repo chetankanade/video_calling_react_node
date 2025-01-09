@@ -29,9 +29,14 @@ io.on("connection", (socket) => {
     //(1)sending data back to user(we use this data(to keep track))
     io.to(socket.id).emit("room:join", data);
   });
-  
+
   //(3)
   socket.on("user:call", ({ to, offer }) => {
     io.to(to).emit("incoming:call", { from: socket.id, offer });
+  });
+
+  socket.on("call:accepted", ({ to, ans }) => {
+    // (6)
+    io.to(to).emit("call:accepted", { from: socket.id, ans });
   });
 });
