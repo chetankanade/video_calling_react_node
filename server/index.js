@@ -39,4 +39,14 @@ io.on("connection", (socket) => {
     // (6)
     io.to(to).emit("call:accepted", { from: socket.id, ans });
   });
+
+  // (8)
+  socket.on("peer:nego:needed", ({ to, offer }) => {
+    io.to(to).emit("peer:nego:needed", { from: socket.id, offer });
+  });
+
+  // (9)
+  socket.on("peer:nego:done", ({ to, ans }) => {
+    io.to(to).emit("peer:nego:final", { from: socket.id, ans });
+  });
 });
