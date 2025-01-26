@@ -2,12 +2,16 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useSocket } from "../context/SocketProvider";
 import ReactPlayer from "react-player";
 import peer from "../services/peer";
+import { useNavigate } from "react-router-dom";
+
 
 const RoomPage = () => {
   const socket = useSocket();
 
   const [remoteSocketId, setRemoteSocketId] = useState(null);
   const [myStream, setMyStream] = useState();
+  const navigate = useNavigate();
+
 
   // (7)
   const [remoteStream, setRemoteStream] = useState();
@@ -137,7 +141,8 @@ const RoomPage = () => {
   return (
     <div>
       <h1>Room page</h1>
-      <h4>{remoteSocketId ? "Connected" : "No one in room"}</h4>
+      <h4>{remoteSocketId ? "Connected, Someone is in room" : "No one in room"}</h4>
+      <button onClick={() => navigate("/")}>Home</button>
 
       {myStream && <button onClick={sendStream}>Send Stream</button>}
       {
