@@ -10,6 +10,7 @@ const RoomPage = () => {
 
   const [remoteSocketId, setRemoteSocketId] = useState(null);
   const [myStream, setMyStream] = useState();
+  const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
 
@@ -19,6 +20,7 @@ const RoomPage = () => {
   const handleUserJoined = useCallback(({ email, id }) => {
     console.log(`Email ${email} id ${id}, user joined`);
     setRemoteSocketId(id);
+    setEmail(email);
   }, []);
 
   // when user call/connect we will on our stream
@@ -141,7 +143,7 @@ const RoomPage = () => {
   return (
     <div>
       <h1>Room page</h1>
-      <h4>{remoteSocketId ? "Connected, Someone is in room" : "No one in room"}</h4>
+      <h4>{remoteSocketId ? `${email} Connected` : "No one in room"}</h4>
       <button onClick={() => navigate("/")}>Home</button>
 
       {myStream && <button onClick={sendStream}>Send Stream</button>}
